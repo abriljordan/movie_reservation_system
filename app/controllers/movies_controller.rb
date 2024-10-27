@@ -14,8 +14,10 @@ class MoviesController < ApplicationController
   end
 
   def show
-    authorize @movie
+    @movie = Movie.find(params[:id])
+    authorize @movie  # This authorizes the @movie instance against the MoviePolicy
 
+    @showtimes = @movie.showtimes
   end
 
   def new

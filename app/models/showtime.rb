@@ -4,6 +4,7 @@ class Showtime < ApplicationRecord
   has_many :reservations, dependent: :destroy
   has_many :seats, dependent: :destroy
   has_many :reserved_users, through: :reservations, source: :user
+  validates :time, presence: true
 
   validates :start_time, :date, :capacity, presence: true
 end

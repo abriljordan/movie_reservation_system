@@ -3,28 +3,27 @@ class ReservationsController < ApplicationController
   before_action :set_showtime, only: %i[create]
   before_action :set_reservation, only: %i[destroy]
 
+  def index
+    @reservations = current_user.reservations.includes(:showtime)
+  end
+  
   def create
-    @reservation = @showtime.reservations.new(
-      user: current_user,
-      seat_number: reservation_params[:seat_number],
-      status: :reserved
-    )
+    @movie = Movie.find(params[:movie_id])
+    @showtime = @movie.showtimes.find(params[:showtime_id])
+    @reservation = @showtime.reservations.build(user: current_user)
 
-    if seat_available?(@reservation.seat_number) && @reservation.save
-      redirect_to @showtime, notice: 'Seat reserved successfully.'
+    if @reservation.save
+      redirect_to movie_path(@movie), notice: 'Reservation successfully created.'
     else
-      redirect_to @showtime, alert: 'Seat reservation failed. Please select an available seat.'
+      redirect_to movie_path(@movie), alert: 'Unable to create reservation.'
     end
   end
 
   def destroy
-    if @reservation.user == current_user
-      @reservation.update(status: :canceled)
-      redirect_to reservations_path, notice: 'Reservation canceled.'
-    else
-      redirect_to reservations_path, alert: 'Unauthorized action.'
-    end
-  end
+    @reservation = Reservation.find(params[:id])
+    @reservation.destroy
+    redirect_to reservations_path, notice: 'Reservation canceled successfully.'
+  ends
 
   private
 
