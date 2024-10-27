@@ -1,0 +1,7 @@
+<h1>Admin Showtimes</h1>
+<% @showtimes.each do |showtime| %>
+  <div>
+  <h2><%= showtime.movie.title %> - <%= showtime.start_time %></h2> 
+    <!-- Add other details or admin actions here -->
+  </div>
+<% end %>

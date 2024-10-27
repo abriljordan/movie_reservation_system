@@ -1,0 +1,24 @@
+<h1>Admin Dashboard</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Movie</th>
+      <th>Showtime</th>
+      <th>Capacity</th>
+      <th>Reserved Seats</th>
+      <th>Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @showtimes.each do |showtime| %>
+      <tr>
+        <td><%= showtime.movie.title %></td>
+        <td><%= showtime.start_time %> on <%= showtime.date %></td>
+        <td><%= showtime.capacity %></td>
+        <td><%= showtime.reservations.where(status: 'reserved').count %></td>
+        <td>$<%= showtime.reservations.where(status: 'reserved').count * 10 %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

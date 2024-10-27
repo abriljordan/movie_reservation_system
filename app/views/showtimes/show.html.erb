@@ -1,0 +1,14 @@
+<h1><%= @showtime.movie.title %> - Showtime</h1>
+<p>Start Time: <%= @showtime.start_time %></p>
+<p>Date: <%= @showtime.date %></p>
+
+<h2>Available Seats</h2>
+<% @showtime.seats.each do |seat| %>
+  <% if seat.status == 'available' %>
+    <%= button_to 'Reserve Seat', showtime_reservations_path(@showtime, reservation: { seat_number: seat.seat_number }), method: :post %>
+  <% else %>
+    <span>Seat <%= seat.seat_number %>: Reserved</span>
+  <% end %>
+<% end %>
+
+<%= link_to 'Back to Movies', movies_path %>

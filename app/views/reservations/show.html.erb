@@ -1,0 +1,5 @@
+<% if user_signed_in? %>
+  <% # Display reservation options %>
+<% else %>
+  <%= link_to 'Sign in to reserve seats', new_user_session_path %>
+<% end %>

@@ -1,0 +1,49 @@
+<!-- app/views/layouts/admin.html.erb -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= yield :head %>
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.png">
+  <%= stylesheet_link_tag "admin", media: 'all' %>
+
+  <%= javascript_importmap_tags %>
+</head>
+
+<body>
+  <div class="admin-container">
+    <header>
+      <h1>Admin Dashboard</h1>
+      <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+    </header>
+    <nav>
+      <ul>
+        <li><%= link_to 'Dashboard', admin_dashboard_path %></li>
+        <li><%= link_to 'Movies', admin_movies_path %></li>
+        <li><%= link_to 'Showtimes', admin_showtimes_path %></li>
+      </ul>
+    </nav>
+    
+    <main>
+      <%= yield %>
+    </main>
+    
+    <aside>
+      <h1>Sidebar</h1>
+      <!-- Additional sidebar content can go here -->
+    </aside>
+    <footer>
+      <p>&copy; <%= Date.current.year %> Movie Reservation System</p>
+    </footer>
+  </div>
+</body>
+</html>

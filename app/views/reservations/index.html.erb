@@ -1,0 +1,6 @@
+<h1>Your Reservations</h1>
+
+<% @reservations.each do |reservation| %>
+  <p><%= reservation.showtime.movie.title %> - Seat <%= reservation.seat_number %> on <%= reservation.showtime.date %></p>
+  <%= button_to 'Cancel Reservation', reservation_path(reservation), method: :delete %>
+<% end %>
