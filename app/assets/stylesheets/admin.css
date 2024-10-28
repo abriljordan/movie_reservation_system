@@ -14,10 +14,10 @@
  *= require_self
  */
 
- /* Add your Holy Grail layout styles */
+ /* Add your Lef Side layout styles - aside was removed */
  .admin-container {
     display: grid;
-    grid-template: auto 1fr auto / auto 1fr auto; /* Defines three columns */
+    grid-template: auto 1fr auto / auto 1fr ; /* Defines three columns */
     height: 100vh; /* Set the container to fill the full viewport height */
     width: 1200px; /* Set a fixed width for the container */
     margin: 0 auto; /* Center the container horizontally */
@@ -29,24 +29,28 @@
     background: lightpink;
     padding: 2rem;
     grid-column: 1 / 4; /* Header spans all three columns */
+    overflow: hidden;
   }
   
   nav {
     background: lightblue;
     grid-column: 1 / 2; /* Left Sidebar */
     padding: 2rem;
+    overflow-y: auto;
   }
   
   main {
     background: coral;
     padding: 2rem;
     grid-column: 2 / 3; /* Main Content */
+    overflow-y: auto;
   }
   
   aside {
     background: yellow;
     padding: 2rem;
     grid-column: 3 / 4; /* Right Sidebar */
+    overflow-y: auto;
   }
   
   footer {
@@ -54,4 +58,20 @@
     padding: 2rem;
     text-align: center;
     grid-column: 1 / 4; /* Footer spans all three columns */
+    overflow: hidden;
+  }
+
+  ul {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Optional: Removes default padding */
+    margin: 0; /* Optional: Removes default margin */
+  }
+  
+  ul li {
+    text-decoration: none; /* Remove underline from list items */
+    margin-bottom: 10px; /* Adds space between items */
+  }
+  
+  ul li a {
+    text-decoration: none; /* Remove underline from links inside list items */
   }

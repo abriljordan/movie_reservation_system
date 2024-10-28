@@ -8,14 +8,16 @@ class ReservationsController < ApplicationController
   end
   
   def create
+    # Assuming params include movie_id and showtime_id
     @movie = Movie.find(params[:movie_id])
     @showtime = @movie.showtimes.find(params[:showtime_id])
-    @reservation = @showtime.reservations.build(user: current_user)
+    @reservation = @showtime.reservations.build(reservation_params)
+    @reservation.user = current_user
 
     if @reservation.save
-      redirect_to movie_path(@movie), notice: 'Reservation successfully created.'
+      redirect_to reservations_path, notice: 'Reservation created successfully.'
     else
-      redirect_to movie_path(@movie), alert: 'Unable to create reservation.'
+      render :new, alert: 'Error creating reservation.'
     end
   end
 
@@ -25,8 +27,6 @@ class ReservationsController < ApplicationController
     redirect_to reservations_path, notice: 'Reservation canceled successfully.'
   ends
 
-  private
-
   def set_showtime
     @showtime = Showtime.find(params[:showtime_id])
   end
@@ -35,8 +35,11 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.find(params[:id])
   end
 
+  
+  private
+
   def reservation_params
-    params.require(:reservation).permit(:seat_number)
+    params.require(:reservation).permit(:seats)
   end
 
   def seat_available?(seat_number)

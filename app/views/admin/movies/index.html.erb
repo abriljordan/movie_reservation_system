@@ -1,8 +1,12 @@
-<h1>Admin Movies</h1>
+<h1>Movies</h1>
+
 <% @movies.each do |movie| %>
-  <div>
-    <h2><%= movie.title %></h2>
-    <p><%= movie.description %></p>
-    <!-- Other details or actions for the admin can go here -->
-  </div>
+  <h2><%= link_to movie.title, admin_movie_path(movie) %></h2>
+  <p><%= movie.description %></p>
+  <p><%= movie.genre %></p>
+  
+  <%= button_to 'Edit', edit_admin_movie_path(movie) %> |
+  <%= button_to 'Delete', admin_movie_path(movie), method: :delete, data: { confirm: 'Are you sure?' } %>
 <% end %>
+
+<%= link_to 'New Movie', new_admin_movie_path %>

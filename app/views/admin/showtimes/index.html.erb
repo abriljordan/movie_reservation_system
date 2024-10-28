@@ -1,7 +1,27 @@
-<h1>Admin Showtimes</h1>
+<% if @movie %>
+  <h1>Showtimes for <%= @movie.title %></h1>
+<% else %>
+  <h1>All Showtimes</h1>
+<% end %>
+
 <% @showtimes.each do |showtime| %>
-  <div>
-  <h2><%= showtime.movie.title %> - <%= showtime.start_time %></h2> 
-    <!-- Add other details or admin actions here -->
+  <div class="showtime-entry">
+    <p>Movie: <%= showtime.movie.title %></p>
+    <p>Start Time: <%= showtime.start_time.strftime("%B %d, %Y %I:%M %p") %></p>
+    <p>Capacity: <%= showtime.capacity %></p>
+    <p>Reserved Seats: <%= showtime.reserved_seats %></p>
+    <p>Available Seats: <%= showtime.available_seats %></p>
+
+    <% if showtime.movie %>
+      <%= button_to 'Edit', edit_admin_showtime_path(showtime), method: :get, class: "btn btn-primary" %>
+      <%= button_to 'Delete', admin_showtime_path(showtime), 
+          method: :delete, 
+          data: { confirm: 'Are you sure?' }, 
+          class: "btn btn-danger" %>
+    <% else %>
+      <p>Associated movie not found.</p>
+    <% end %>
   </div>
 <% end %>
+
+<%= button_to 'New Showtime', new_admin_showtime_path, class: "btn btn-success" %>

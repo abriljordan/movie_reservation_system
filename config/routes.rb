@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   namespace :admin do
     get '/', to: 'dashboard#index', as: :dashboard
-    resources :movies  # This will create paths like admin_movies_path
-    resources :showtimes  # This will create paths like admin_showtimes_path
+    resources :showtimes
+    resources :movies
   end
+
 
   devise_for :users
 
