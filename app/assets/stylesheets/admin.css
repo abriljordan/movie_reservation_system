@@ -55,7 +55,7 @@
   
   footer {
     background: wheat;
-    padding: 2rem;
+    padding: 0.5rem 2rem;
     text-align: center;
     grid-column: 1 / 4; /* Footer spans all three columns */
     overflow: hidden;
