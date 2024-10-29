@@ -1,8 +1,20 @@
-<!-- app/views/movies/show.html.erb -->
-<h1><%= @movie.title %></h1>
-<p><%= @movie.description %></p>
+<div class="movie-details">
+  <h1><%= @movie.title %></h1>
 
-<h2>Available Showtimes</h2>
+  <div class="movie-content">
+    <% if @movie.poster_image.attached? %>
+      <%= image_tag @movie.poster_image, class: "movie-poster" %>
+    <% end %>
+
+    <div class="movie-info">
+      <p><strong>Genre:</strong> <%= @movie.genre %></p>
+      <p><strong>Description:</strong> <%= @movie.description %></p>
+    </div>
+  </div>
+
+  <%= link_to 'Edit', edit_admin_movie_path(@movie), class: 'button' %>
+  <%= link_to 'Back to Movies', admin_movies_path, class: 'button' %>
+</div>
 <% if @movie.showtimes.any? %>
   <% @movie.showtimes.each do |showtime| %>
     <div>

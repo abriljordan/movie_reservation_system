@@ -1,27 +1,37 @@
-<h1>Edit Movie</h1>
+<div class="edit-container">
+  <h1>Edit Movie</h1>
 
-<%= form_with(model: [:admin, @movie], local: true) do |f| %>
-  <div>
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
+  <%= form_with(model: [:admin, @movie], local: true, class: "edit-form") do |f| %>
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
 
-  <div>
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-  </div>
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_area :description, class: "form-control", rows: 5 %>
+    </div>
 
-  <div>
-    <%= f.label :genre %>
-    <%= f.text_field :genre %>
-  </div>
+    <div class="form-group">
+      <%= f.label :genre %>
+      <%= f.text_field :genre, class: "form-control" %>
+    </div>
 
-  <div>
-    <%= f.label :poster_image_url %>
-    <%= f.text_field :poster_image_url %>
-  </div>
+    <div class="form-group">
+      <%= f.label :poster_image %>
+      <%= f.file_field :poster_image, class: "form-control" %>
+    </div>
 
-  <%= f.submit 'Update Movie' %>
-<% end %>
+    <% if @movie.poster_image_url.present? %>
+      <div class="current-image">
+        <p>Current poster:</p>
+        <%= image_tag @movie.poster_image_url, class: "preview-image" %>
+      </div>
+    <% end %>
 
-<%= link_to 'Back to Movies', admin_movies_path %>
+    <div class="form-actions">
+      <%= f.submit 'Update Movie', class: "button" %>
+      <%= link_to 'Back to Movies', admin_movies_path, class: "button" %>
+    </div>
+  <% end %>
+</div>

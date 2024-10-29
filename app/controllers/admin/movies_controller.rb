@@ -47,7 +47,15 @@ class Admin::MoviesController < ApplicationController
     end
   end
 
-  
+  def update
+    @movie = Movie.find(params[:id])
+    if @movie.update(movie_params)
+      redirect_to admin_movies_path, notice: 'Movie updated successfully'
+    else
+      render :edit
+    end
+  end
+
   private
 
   def set_movie
@@ -55,7 +63,7 @@ class Admin::MoviesController < ApplicationController
   end
 
   def movie_params
-    params.require(:movie).permit(:title, :description, :release_date, :director) # Add other permitted attributes as needed
+    params.require(:movie).permit(:title, :description, :genre, :poster_image)
   end
 
   def authorize_admin

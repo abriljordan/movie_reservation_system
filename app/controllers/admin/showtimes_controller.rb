@@ -13,28 +13,16 @@ class Admin::ShowtimesController < ApplicationController
   end
 
   def new
-    if @movie
-      @showtime = @movie.showtimes.new
-    else
-      @showtime = Showtime.new
-    end  
+    @showtime = Showtime.new
   end
 
   def create
-    @showtime = @movie.showtimes.new(showtime_params)
-  
-    respond_to do |format|
-      if @showtime.save
-        format.turbo_stream { 
-          render turbo_stream: [
-            turbo_stream.append("showtimes", partial: "showtime", locals: { showtime: @showtime }),
-            turbo_stream.update("new_showtime", "")
-          ]
-        }
-        format.html { redirect_to admin_movie_showtimes_path(@movie) }
-      else
-        format.html { render :new }
-      end
+    @showtime = Showtime.new(showtime_params)
+    
+    if @showtime.save
+      redirect_to admin_showtimes_path, notice: 'Showtime was successfully created.'
+    else
+      render :new
     end
   end
 

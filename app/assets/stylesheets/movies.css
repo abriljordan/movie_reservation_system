@@ -1,0 +1,21 @@
+.movie-details {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.movie-content {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+}
+
+.movie-poster {
+  max-width: 300px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.movie-info {
+  flex: 1;
+}
