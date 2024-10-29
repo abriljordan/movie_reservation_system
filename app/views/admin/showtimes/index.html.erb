@@ -1,50 +1,74 @@
-<% if @movie %>
-  <h1>Showtimes for <%= @movie.title %></h1>
-<% else %>
-  <h1>All Showtimes</h1>
-<% end %>
-<div data-controller="filter">
-  <div class="filters">
-    <div class="date-range">
-      <input type="date" 
-             data-filter-target="dateStart" 
-             data-action="change->filter#filter">
-      <input type="date" 
-             data-filter-target="dateEnd" 
-             data-action="change->filter#filter">
+<div class="showtimes-container">
+  <% if @movie %>
+    <h1>Showtimes for <%= @movie.title %></h1>
+  <% else %>
+    <h1>All Showtimes</h1>
+  <% end %>
+
+  <div data-controller="filter">
+    <div class="filters">
+      <div class="date-range">
+        <input type="date"
+               data-filter-target="dateStart"
+               data-action="change->filter#filter">
+        <input type="date"
+               data-filter-target="dateEnd"
+               data-action="change->filter#filter">
+      </div>
+
+      <select data-filter-target="sortSelect"
+              data-action="change->filter#filter"
+              class="sort-select">
+        <option value="date">Sort by Date</option>
+        <option value="capacity">Sort by Capacity</option>
+        <option value="title">Sort by Movie Title</option>
+      </select>
     </div>
-    
-    <select data-filter-target="sortSelect" 
-            data-action="change->filter#filter">
-      <option value="date">Sort by Date</option>
-      <option value="capacity">Sort by Capacity</option>
-      <option value="title">Sort by Movie Title</option>
-    </select>
-  </div>
 
-  <div data-filter-target="list">
-    <%= turbo_frame_tag "showtimes" do %>
-      <% @showtimes.each do |showtime| %>
-        <%= turbo_frame_tag dom_id(showtime) do %>
-          <div class="showtime-entry">
-            <p>Movie: <%= showtime.movie.title %></p>
-            <p>Start Time: <%= showtime.start_time.strftime("%B %d, %Y %I:%M %p") %></p>
-            <p>Capacity: <%= showtime.capacity %></p>
-            <p>Reserved Seats: <%= showtime.reserved_seats %></p>
-            <p>Available Seats: <%= showtime.available_seats %></p>
+    <div data-filter-target="list" class="showtimes-list">
+      <%= turbo_frame_tag "showtimes" do %>
+        <% @showtimes.each do |showtime| %>
+          <%= turbo_frame_tag dom_id(showtime) do %>
+            <div class="showtime-entry">
+              <div class="showtime-details">
+                <h3><%= showtime.movie.title %></h3>
+                <p class="time"><%= showtime.start_time.strftime("%B %d, %Y %I:%M %p") %></p>
+                <div class="capacity-info">
+                  <p>Capacity: <%= showtime.capacity %></p>
+                  <p>Reserved: <%= showtime.reserved_seats %></p>
+                  <p>Available: <%= showtime.available_seats %></p>
+                </div>
+              </div>
 
-            <%= button_to 'Edit', edit_admin_showtime_path(showtime), method: :get %>
-            <%= button_to 'Delete', admin_showtime_path(showtime), 
-                method: :delete,
-                class: "btn btn-danger" %>
-          </div>
+              <div class="showtime-actions">
+                <%= button_to 'Edit', 
+                    edit_admin_showtime_path(showtime), 
+                    method: :get, 
+                    class: "btn btn-edit" %>
+                <%= button_to 'Delete', 
+                    admin_showtime_path(showtime),
+                    method: :delete,
+                    class: "btn btn-danger",
+                    data: { turbo_confirm: 'Are you sure?' } %>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <% if @movie %>
+      <%= button_to 'New Showtime', 
+          new_admin_movie_showtime_path(@movie), 
+          method: :get, 
+          class: 'btn btn-primary' %>
+    <% else %>
+      <%= button_to 'New Showtime', 
+          new_admin_showtime_path, 
+          method: :get, 
+          class: 'btn btn-primary' %>
     <% end %>
   </div>
 </div>
-<% if @movie %>
-  <%= button_to 'New Showtime', new_admin_movie_showtime_path(@movie), method: :get, class: 'btn btn-primary' %>
-<% else %>
-  <%= button_to 'New Showtime', new_admin_showtime_path, method: :get, class: 'btn btn-primary' %>
-<% end %>

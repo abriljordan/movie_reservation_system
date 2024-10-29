@@ -1,29 +1,48 @@
-<h1>New Showtime</h1>
+<div class="showtime-form-container">
+  <h2><%= @movie ? "New Showtime for #{@movie.title}" : "New Showtime" %></h2>
 
-<% if @movie %>
-  <%= form_for [:admin, @movie, @showtime] do |f| %>
-    <%= f.label :start_time %>
-    <%= f.datetime_select :start_time %>
-  
-    <%= f.label :end_time %>
-    <%= f.datetime_select :end_time %>
-  
-    <%= f.label :capacity %>
-    <%= f.number_field :capacity %>
-  
-    <%= f.submit "Create Showtime" %>
+  <%= form_with(model: [:admin, @movie, @showtime], local: true) do |f| %>
+    <% if @showtime.errors.any? %>
+      <div class="error-messages">
+        <h3><%= pluralize(@showtime.errors.count, "error") %> prohibited this showtime from being saved:</h3>
+        <ul>
+          <% @showtime.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <% unless @movie %>
+        <%= f.label :movie_id %>
+        <%= f.collection_select :movie_id, Movie.all, :id, :title, prompt: "Select a movie" %>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :date %>
+      <%= f.date_field :date, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :start_time %>
+      <%= f.time_field :start_time, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :end_time %>
+      <%= f.time_field :end_time, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :capacity %>
+      <%= f.number_field :capacity, min: 1, class: 'form-control' %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit 'Create Showtime', class: 'btn btn-primary' %>
+      <%= link_to 'Back', @movie ? admin_movie_showtimes_path(@movie) : admin_showtimes_path, class: 'btn btn-secondary' %>
+    </div>
   <% end %>
-<% else %>
-  <%= form_for [:admin, @showtime] do |f| %>
-    <%= f.label :start_time %>
-    <%= f.datetime_select :start_time %>
-  
-    <%= f.label :end_time %>
-    <%= f.datetime_select :end_time %>
-  
-    <%= f.label :capacity %>
-    <%= f.number_field :capacity %>
-  
-    <%= f.submit "Create Showtime" %>
-  <% end %>
-<% end %>
+</div>

@@ -1,30 +1,48 @@
-<div class="movies-container">
-<h1>Movies</h1>
-
-<%= turbo_frame_tag "movies" do %>
-  <% @movies.each do |movie| %>
-    <%= turbo_frame_tag dom_id(movie) do %>
-      <h2><%= link_to movie.title, admin_movie_path(movie) %></h2>
-      <p><%= movie.description %></p>
-      <p><%= movie.genre %></p>
-      
-      <div class="button-group">
-        <%= button_to 'Edit', 
-            edit_admin_movie_path(movie), 
-            method: :get,
-            class: 'button' %>
-            
-        <%= button_to 'Delete', 
-            admin_movie_path(movie), 
-            method: :delete, 
-            class: 'button',
-            form: { data: { turbo_confirm: 'Are you sure?' } } %>
-      </div>
+<div class="admin-movies-container">
+  <header class="page-header">
+    <h1 class="main-title">Movie Management</h1>
+    <%= link_to new_admin_movie_path, class: 'new-movie-btn' do %>
+      <i class="fas fa-plus"></i> Add New Movie
     <% end %>
+  </header>
+
+  <%= turbo_frame_tag "movies" do %>
+    <div class="movies-grid">
+      <% @movies.each do |movie| %>
+        <%= turbo_frame_tag dom_id(movie) do %>
+          <div class="movie-card">
+            <div class="movie-content">
+              <h2 class="movie-title">
+                <%= link_to movie.title, admin_movie_path(movie), class: "movie-link" %>
+              </h2>
+              
+              <div class="movie-details">
+                <span class="movie-genre"><%= movie.genre %></span>
+                <p class="movie-description"><%= truncate(movie.description, length: 150) %></p>
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <%= button_to edit_admin_movie_path(movie), 
+                  method: :get,
+                  class: 'edit-btn' do %>
+                  <i class="fas fa-edit"></i> Edit
+              <% end %>
+              
+              <%= button_to admin_movie_path(movie), 
+                  method: :delete, 
+                  class: 'delete-btn',
+                  form: { 
+                    data: { 
+                      turbo_confirm: 'Are you sure you want to delete this movie?' 
+                    } 
+                  } do %>
+                  <i class="fas fa-trash"></i> Delete
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
-<% end %>
-
-<%= link_to 'New Movie', new_admin_movie_path, class: 'button' %>
-
-
 </div>

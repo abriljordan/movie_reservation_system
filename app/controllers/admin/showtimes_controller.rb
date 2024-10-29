@@ -1,29 +1,44 @@
 # app/controllers/admin/showtimes_controller.rb
 class Admin::ShowtimesController < ApplicationController
+  before_action :set_movie, only: [:new, :create, :index]
+  before_action :set_showtime, only: [:show, :edit, :update, :destroy]
   layout 'admin'
-
   before_action :authenticate_user!
   before_action :authorize_admin
-  before_action :set_movie, only: [:index, :new, :create]
-  before_action :set_showtime, only: [:edit, :update, :destroy]
 
   def index
-    @showtimes = @movie ? @movie.showtimes : Showtime.all.includes(:movie)
-    @movies = Movie.all
+    @showtimes = if @movie
+      @movie.showtimes
+    else
+      Showtime.all
+    end
   end
 
   def new
-    @showtime = Showtime.new
+    @showtime = if @movie
+      @movie.showtimes.build
+    else
+      Showtime.new
+    end
   end
 
   def create
-    @showtime = Showtime.new(showtime_params)
-    
-    if @showtime.save
-      redirect_to admin_showtimes_path, notice: 'Showtime was successfully created.'
+    if params[:movie_id]
+      @movie = Movie.find(params[:movie_id])
+      @showtime = @movie.showtimes.build(showtime_params)
     else
-      render :new
+      @showtime = Showtime.new(showtime_params)
     end
+
+    if @showtime.save
+      redirect_to @movie ? admin_movie_path(@movie) : admin_showtimes_path, 
+                  notice: 'Showtime was successfully created.'
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def show
   end
 
   def edit
@@ -38,7 +53,6 @@ class Admin::ShowtimesController < ApplicationController
           partial: "admin/showtimes/showtime",
           locals: { showtime: @showtime }
         )
-        
         format.turbo_stream
         format.html { redirect_to admin_movie_showtimes_path(@movie) }
       else
@@ -50,23 +64,29 @@ class Admin::ShowtimesController < ApplicationController
   def destroy
     @showtime.destroy
     redirect_to admin_movie_showtimes_path(@movie), notice: 'Showtime deleted successfully.'
+  rescue ActiveRecord::InvalidForeignKey => e
+    redirect_to admin_movie_showtimes_path(@movie), alert: 'The showtime is associated with a reservation and cannot be deleted.'
   end
 
   private
 
-  def set_movie
-    @movie = Movie.find(params[:movie_id]) if params[:movie_id]
+  def showtime_params
+    params.require(:showtime).permit(:start_time, :end_time, :date, :capacity, :movie_id)
   end
 
   def set_showtime
     @showtime = Showtime.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to admin_movie_showtimes_path(@movie), alert: 'The showtime does not exist.'
   end
 
-  def showtime_params
-    params.require(:showtime).permit(:start_time, :end_time, :capacity, :date)
+  def set_movie
+    @movie = Movie.find(params[:movie_id]) if params[:movie_id]
+  rescue ActiveRecord::RecordNotFound
+    redirect_to admin_movies_path, alert: 'The movie does not exist.'
   end
 
   def authorize_admin
-    redirect_to(root_path, alert: 'Not authorized.') unless current_user.admin?
+    redirect_to(root_path, alert: 'Not authorized.') unless current_user&.admin?
   end
 end

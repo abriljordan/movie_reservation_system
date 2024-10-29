@@ -1,3 +1,18 @@
-<%= form_with(model: [:admin, @movie, @showtime]) do |f| %>
-  # form fields here
+<%= form_with(model: [:admin, @showtime], local: true) do |f| %>
+  <div class="field">
+    <%= f.label :movie_id, "Select Movie" %>
+    <%= f.collection_select :movie_id, Movie.all, :id, :title, prompt: "Choose a movie" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :start_time %>
+    <%= f.datetime_local_field :start_time %>
+  </div>
+
+  <div class="field">
+    <%= f.label :capacity %>
+    <%= f.number_field :capacity %>
+  </div>
+
+  <%= f.submit "Create Showtime", class: "btn btn-primary" %>
 <% end %>
