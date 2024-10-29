@@ -12,6 +12,13 @@ class Reservation < ApplicationRecord
   scope :by_showtime, ->(showtime_id) { where(showtime_id: showtime_id) }
   scope :by_date, ->(date) { joins(:showtime).where(showtimes: { date: date }) }
 
+  after_commit -> { 
+    broadcast_replace_to "dashboard",
+    target: "showtime_#{showtime.id}",
+    partial: "admin/dashboard/showtime",
+    locals: { showtime: showtime }
+  }
+
   private
 
   def seat_number_uniqueness_within_showtime

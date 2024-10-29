@@ -1,2 +1,27 @@
-<h1>Movies#edit</h1>
-<p>Find me in app/views/movies/edit.html.erb</p>
+<h1>Edit Movie</h1>
+
+<%= form_with(model: [:admin, @movie], local: true) do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.label :genre %>
+    <%= f.text_field :genre %>
+  </div>
+
+  <div>
+    <%= f.label :poster_image_url %>
+    <%= f.text_field :poster_image_url %>
+  </div>
+
+  <%= f.submit 'Update Movie' %>
+<% end %>
+
+<%= link_to 'Back to Movies', admin_movies_path %>

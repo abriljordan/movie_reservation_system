@@ -1,0 +1,9 @@
+<%= turbo_frame_tag dom_id(showtime) do %>
+  <tr>
+    <td><%= showtime.movie.title %></td>
+    <td><%= showtime.start_time %> on <%= showtime.date %></td>
+    <td><%= showtime.capacity %></td>
+    <td><%= showtime.reservations.where(status: 'reserved').count %></td>
+    <td>$<%= showtime.reservations.where(status: 'reserved').count * 10 %></td>
+  </tr>
+<% end %>

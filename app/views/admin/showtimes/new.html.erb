@@ -1,15 +1,29 @@
-<h1>New Showtime for <%= @movie.title %></h1>
+<h1>New Showtime</h1>
 
-<%= form_with model: [@movie, @showtime], url: admin_movie_showtimes_path(@movie), method: :post do |form| %>
-  <!-- Your form fields for start_time, end_time, etc. -->
-  <%= form.label :start_time %>
-  <%= form.datetime_select :start_time %>
-
-  <%= form.label :end_time %>
-  <%= form.datetime_select :end_time %>
-
-  <%= form.label :capacity %>
-  <%= form.number_field :capacity %>
-
-  <%= form.submit "Create Showtime" %>
+<% if @movie %>
+  <%= form_for [:admin, @movie, @showtime] do |f| %>
+    <%= f.label :start_time %>
+    <%= f.datetime_select :start_time %>
+  
+    <%= f.label :end_time %>
+    <%= f.datetime_select :end_time %>
+  
+    <%= f.label :capacity %>
+    <%= f.number_field :capacity %>
+  
+    <%= f.submit "Create Showtime" %>
+  <% end %>
+<% else %>
+  <%= form_for [:admin, @showtime] do |f| %>
+    <%= f.label :start_time %>
+    <%= f.datetime_select :start_time %>
+  
+    <%= f.label :end_time %>
+    <%= f.datetime_select :end_time %>
+  
+    <%= f.label :capacity %>
+    <%= f.number_field :capacity %>
+  
+    <%= f.submit "Create Showtime" %>
+  <% end %>
 <% end %>

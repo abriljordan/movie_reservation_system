@@ -36,6 +36,18 @@ class Admin::MoviesController < ApplicationController
     end
   end
 
+
+  def destroy
+    @movie = Movie.find(params[:id])
+    @movie.destroy
+  
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@movie) }
+      format.html { redirect_to admin_movies_path, notice: 'Movie was successfully deleted.' }
+    end
+  end
+
+  
   private
 
   def set_movie
@@ -50,3 +62,5 @@ class Admin::MoviesController < ApplicationController
     redirect_to(root_path, alert: 'Not authorized.') unless current_user.admin?
   end
 end
+
+

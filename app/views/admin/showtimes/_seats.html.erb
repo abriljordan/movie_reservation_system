@@ -1,0 +1,13 @@
+<div id="showtime_<%= showtime.id %>_seats">
+  <p>Available Seats: <%= showtime.available_seats %></p>
+  <p>Reserved Seats: <%= showtime.reserved_seats %></p>
+  
+  <div class="seat-map" data-controller="seats">
+    <% showtime.capacity.times do |i| %>
+      <div class="seat <%= 'reserved' if i < showtime.reserved_seats %>"
+           data-action="click->seats#toggle"
+           data-seat-index="<%= i %>">
+      </div>
+    <% end %>
+  </div>
+</div>

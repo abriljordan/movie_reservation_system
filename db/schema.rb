@@ -11,9 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.2].define(version: 2024_10_28_055903) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "movies", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -25,8 +22,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_055903) do
   end
 
   create_table "reservations", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "showtime_id", null: false
+    t.integer "user_id", null: false
+    t.integer "showtime_id", null: false
     t.integer "seat_number"
     t.integer "status"
     t.datetime "created_at", null: false
@@ -36,7 +33,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_055903) do
   end
 
   create_table "seats", force: :cascade do |t|
-    t.bigint "showtime_id", null: false
+    t.integer "showtime_id", null: false
     t.integer "seat_number"
     t.integer "status"
     t.datetime "created_at", null: false
@@ -45,7 +42,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_055903) do
   end
 
   create_table "showtimes", force: :cascade do |t|
-    t.bigint "movie_id", null: false
+    t.integer "movie_id", null: false
     t.datetime "start_time"
     t.date "date"
     t.integer "capacity"

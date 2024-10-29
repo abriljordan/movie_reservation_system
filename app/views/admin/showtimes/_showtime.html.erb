@@ -1,0 +1,25 @@
+<%= turbo_frame_tag dom_id(showtime) do %>
+  <div class="showtime-entry" data-controller="showtime">
+    <p>Movie: <%= showtime.movie.title %></p>
+    <p>Start Time: <%= showtime.start_time.strftime("%B %d, %Y %I:%M %p") %></p>
+    <p>
+      Capacity: 
+      <span data-showtime-target="capacity"><%= showtime.capacity %></span>
+    </p>
+    <p>
+      Available Seats: 
+      <span data-showtime-target="available"><%= showtime.available_seats %></span>
+    </p>
+    
+    <%= turbo_stream_from showtime %>
+    
+    <div class="actions">
+      <%= button_to 'Edit', edit_admin_showtime_path(showtime), 
+          method: :get,
+          data: { turbo_frame: dom_id(showtime) } %>
+      <%= button_to 'Delete', admin_showtime_path(showtime),
+          method: :delete,
+          class: "btn btn-danger" %>
+    </div>
+  </div>
+<% end %>

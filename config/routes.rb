@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   namespace :admin do
     get '/', to: 'dashboard#index', as: :dashboard
+    resources :movies do
+      resources :showtimes
+    end
     resources :showtimes
-    resources :movies
-  end
-
+  end  
 
   devise_for :users
 

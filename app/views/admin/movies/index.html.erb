@@ -1,12 +1,30 @@
+<div class="movies-container">
 <h1>Movies</h1>
 
-<% @movies.each do |movie| %>
-  <h2><%= link_to movie.title, admin_movie_path(movie) %></h2>
-  <p><%= movie.description %></p>
-  <p><%= movie.genre %></p>
-  
-  <%= button_to 'Edit', edit_admin_movie_path(movie) %> |
-  <%= button_to 'Delete', admin_movie_path(movie), method: :delete, data: { confirm: 'Are you sure?' } %>
+<%= turbo_frame_tag "movies" do %>
+  <% @movies.each do |movie| %>
+    <%= turbo_frame_tag dom_id(movie) do %>
+      <h2><%= link_to movie.title, admin_movie_path(movie) %></h2>
+      <p><%= movie.description %></p>
+      <p><%= movie.genre %></p>
+      
+      <div class="button-group">
+        <%= button_to 'Edit', 
+            edit_admin_movie_path(movie), 
+            method: :get,
+            class: 'button' %>
+            
+        <%= button_to 'Delete', 
+            admin_movie_path(movie), 
+            method: :delete, 
+            class: 'button',
+            form: { data: { turbo_confirm: 'Are you sure?' } } %>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>
 
-<%= link_to 'New Movie', new_admin_movie_path %>
+<%= link_to 'New Movie', new_admin_movie_path, class: 'button' %>
+
+
+</div>

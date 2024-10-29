@@ -1,24 +1,37 @@
 <h1>Admin Dashboard</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Movie</th>
-      <th>Showtime</th>
-      <th>Capacity</th>
-      <th>Reserved Seats</th>
-      <th>Revenue</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @showtimes.each do |showtime| %>
+<%= turbo_stream_from "dashboard" %>
+
+<div data-controller="dashboard">
+  <div class="filters mb-4">
+    <input type="text" 
+           data-dashboard-target="search" 
+           data-action="input->dashboard#filter"
+           placeholder="Search movies..."
+           class="search-input">
+           
+    <select data-dashboard-target="dateFilter" data-action="change->dashboard#filter">
+      <option value="">All Dates</option>
+      <option value="today">Today</option>
+      <option value="week">This Week</option>
+      <option value="month">This Month</option>
+    </select>
+  </div>
+
+  <table data-dashboard-target="table">
+    <thead>
       <tr>
-        <td><%= showtime.movie.title %></td>
-        <td><%= showtime.start_time %> on <%= showtime.date %></td>
-        <td><%= showtime.capacity %></td>
-        <td><%= showtime.reservations.where(status: 'reserved').count %></td>
-        <td>$<%= showtime.reservations.where(status: 'reserved').count * 10 %></td>
+        <th data-action="click->dashboard#sort" data-sort-key="title">Movie ↕</th>
+        <th data-action="click->dashboard#sort" data-sort-key="datetime">Showtime ↕</th>
+        <th data-action="click->dashboard#sort" data-sort-key="capacity">Capacity ↕</th>
+        <th data-action="click->dashboard#sort" data-sort-key="reserved">Reserved Seats ↕</th>
+        <th data-action="click->dashboard#sort" data-sort-key="revenue">Revenue ↕</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @showtimes.each do |showtime| %>
+        <%= render "showtime", showtime: showtime %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

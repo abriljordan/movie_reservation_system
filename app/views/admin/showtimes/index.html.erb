@@ -3,25 +3,48 @@
 <% else %>
   <h1>All Showtimes</h1>
 <% end %>
+<div data-controller="filter">
+  <div class="filters">
+    <div class="date-range">
+      <input type="date" 
+             data-filter-target="dateStart" 
+             data-action="change->filter#filter">
+      <input type="date" 
+             data-filter-target="dateEnd" 
+             data-action="change->filter#filter">
+    </div>
+    
+    <select data-filter-target="sortSelect" 
+            data-action="change->filter#filter">
+      <option value="date">Sort by Date</option>
+      <option value="capacity">Sort by Capacity</option>
+      <option value="title">Sort by Movie Title</option>
+    </select>
+  </div>
 
-<% @showtimes.each do |showtime| %>
-  <div class="showtime-entry">
-    <p>Movie: <%= showtime.movie.title %></p>
-    <p>Start Time: <%= showtime.start_time.strftime("%B %d, %Y %I:%M %p") %></p>
-    <p>Capacity: <%= showtime.capacity %></p>
-    <p>Reserved Seats: <%= showtime.reserved_seats %></p>
-    <p>Available Seats: <%= showtime.available_seats %></p>
+  <div data-filter-target="list">
+    <%= turbo_frame_tag "showtimes" do %>
+      <% @showtimes.each do |showtime| %>
+        <%= turbo_frame_tag dom_id(showtime) do %>
+          <div class="showtime-entry">
+            <p>Movie: <%= showtime.movie.title %></p>
+            <p>Start Time: <%= showtime.start_time.strftime("%B %d, %Y %I:%M %p") %></p>
+            <p>Capacity: <%= showtime.capacity %></p>
+            <p>Reserved Seats: <%= showtime.reserved_seats %></p>
+            <p>Available Seats: <%= showtime.available_seats %></p>
 
-    <% if showtime.movie %>
-      <%= button_to 'Edit', edit_admin_showtime_path(showtime), method: :get, class: "btn btn-primary" %>
-      <%= button_to 'Delete', admin_showtime_path(showtime), 
-          method: :delete, 
-          data: { confirm: 'Are you sure?' }, 
-          class: "btn btn-danger" %>
-    <% else %>
-      <p>Associated movie not found.</p>
+            <%= button_to 'Edit', edit_admin_showtime_path(showtime), method: :get %>
+            <%= button_to 'Delete', admin_showtime_path(showtime), 
+                method: :delete,
+                class: "btn btn-danger" %>
+          </div>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
+</div>
+<% if @movie %>
+  <%= button_to 'New Showtime', new_admin_movie_showtime_path(@movie), method: :get, class: 'btn btn-primary' %>
+<% else %>
+  <%= button_to 'New Showtime', new_admin_showtime_path, method: :get, class: 'btn btn-primary' %>
 <% end %>
-
-<%= button_to 'New Showtime', new_admin_showtime_path, class: "btn btn-success" %>

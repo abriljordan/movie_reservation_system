@@ -13,17 +13,28 @@ class Admin::ShowtimesController < ApplicationController
   end
 
   def new
-    @showtime = @movie.showtimes.new
+    if @movie
+      @showtime = @movie.showtimes.new
+    else
+      @showtime = Showtime.new
+    end  
   end
 
   def create
     @showtime = @movie.showtimes.new(showtime_params)
-    @showtime.end_time ||= @showtime.start_time + 2.hours if @showtime.start_time.present?
   
-    if @showtime.save
-      redirect_to admin_movie_showtimes_path(@movie), notice: 'Showtime created successfully.'
-    else
-      render :new
+    respond_to do |format|
+      if @showtime.save
+        format.turbo_stream { 
+          render turbo_stream: [
+            turbo_stream.append("showtimes", partial: "showtime", locals: { showtime: @showtime }),
+            turbo_stream.update("new_showtime", "")
+          ]
+        }
+        format.html { redirect_to admin_movie_showtimes_path(@movie) }
+      else
+        format.html { render :new }
+      end
     end
   end
 
@@ -31,10 +42,20 @@ class Admin::ShowtimesController < ApplicationController
   end
 
   def update
-    if @showtime.update(showtime_params)
-      redirect_to admin_movie_showtimes_path(@movie), notice: 'Showtime updated successfully.'
-    else
-      render :edit
+    respond_to do |format|
+      if @showtime.update(showtime_params)
+        Turbo::StreamsChannel.broadcast_update_to(
+          "showtimes",
+          target: dom_id(@showtime),
+          partial: "admin/showtimes/showtime",
+          locals: { showtime: @showtime }
+        )
+        
+        format.turbo_stream
+        format.html { redirect_to admin_movie_showtimes_path(@movie) }
+      else
+        format.html { render :edit }
+      end
     end
   end
 

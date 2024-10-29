@@ -1,12 +1,8 @@
-class PopulateEndTimeAndTimeForExistingShowtimes <
+class PopulateEndTimeAndTimeForExistingShowtimes < ActiveRecord::Migration[7.2]
   def up
+    # Code to populate end_time and time fields for existing showtimes
     Showtime.where(end_time: nil).find_each do |showtime|
-      if showtime.start_time.present?
-        showtime.update(
-          end_time: showtime.start_time + 2.hours,
-          time: showtime.start_time
-        )
-      end
+      showtime.update!(end_time: showtime.start_time + 2.hours, time: showtime.start_time)
     end
   end
 

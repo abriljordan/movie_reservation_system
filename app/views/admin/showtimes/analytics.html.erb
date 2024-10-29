@@ -1,0 +1,22 @@
+<div data-controller="analytics">
+  <h2>Showtime Analytics</h2>
+  
+  <canvas data-analytics-target="chart"
+          data-labels="<%= @daily_stats.keys.join(',') %>"
+          data-values="<%= @daily_stats.values.join(',') %>">
+  </canvas>
+  
+  <div class="trends-panel" data-analytics-target="trends">
+    <h3>Booking Trends</h3>
+    <div class="trend-metrics">
+      <div class="metric">
+        <span>Average Occupancy</span>
+        <strong><%= @average_occupancy %>%</strong>
+      </div>
+      <div class="metric">
+        <span>Peak Hours</span>
+        <strong><%= @peak_hours.join(', ') %></strong>
+      </div>
+    </div>
+  </div>
+</div>
