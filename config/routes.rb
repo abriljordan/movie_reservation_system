@@ -9,13 +9,15 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  authenticated :user do
-    root to: 'movies#index', as: :authenticated_root
-  end
+#  authenticated :user do
+#    root to: 'movies#index', as: :authenticated_root
+#  end
   
-  unauthenticated do
-    root to: 'pages#home'
-  end
+  root 'movies#index'
+
+#  unauthenticated do
+#    root to: 'pages#home'
+#  end
 
   resources :movies do
     resources :showtimes do

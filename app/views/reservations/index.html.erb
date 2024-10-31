@@ -1,0 +1,17 @@
+<div class="container">
+  <h1>My Reservations</h1>
+
+  <div class="reservations-grid">
+    <% @reservations.each do |reservation| %>
+      <div class="reservation-card">
+        <h3><%= reservation.showtime.movie.title %></h3>
+        <div class="reservation-details">
+          <p>Date: <%= reservation.showtime.date.strftime("%B %d, %Y") %></p>
+          <p>Time: <%= reservation.showtime.time.strftime("%I:%M %p") %></p>
+          <p>Seat: <%= reservation.seat_number %></p>
+          <p class="status">Status: <%= reservation.status %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

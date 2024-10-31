@@ -1,0 +1,42 @@
+<div class="container" data-controller="seat-selection">
+  <h2><%= @showtime.movie.title %></h2>
+  <p>Date: <%= @showtime.date.strftime("%B %d, %Y") %></p>
+  <p>Time: <%= @showtime.time.strftime("%I:%M %p") %></p>
+
+  <div class="seats-container">
+    <h3>Select Your Seat</h3>
+    <div class="screen">Screen</div>
+    
+    <div class="seat-legend">
+      <div class="legend-item">
+        <div class="seat available"></div>
+        <span>Available</span>
+      </div>
+      <div class="legend-item">
+        <div class="seat reserved"></div>
+        <span>Reserved</span>
+      </div>
+      <div class="legend-item">
+        <div class="seat selected"></div>
+        <span>Selected</span>
+      </div>
+    </div>
+
+    <div class="seats-grid">
+      <% (1..@showtime.capacity).each do |seat_number| %>
+        <% is_reserved = @showtime.reservations.exists?(seat_number: seat_number) %>
+        <div class="seat <%= is_reserved ? 'reserved' : 'available' %>"
+             data-seat-selection-target="seat"
+             data-action="click->seat-selection#select"
+             data-seat-id="<%= seat_number %>">
+          <%= seat_number %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= form_for [@showtime.movie, @showtime, Reservation.new] do |f| %>
+      <%= f.hidden_field :seat_number, data: { seat_selection_target: "seatInput" } %>
+      <%= f.submit "Reserve Seat", class: "btn btn-primary", data: { seat_selection_target: "submitButton" } %>
+    <% end %>
+  </div>
+</div>

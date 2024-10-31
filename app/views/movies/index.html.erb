@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>Now Showing</h1>
+  
+  <div class="movies-grid">
+    <% @movies.each do |movie| %>
+      <%= link_to movie_path(movie), class: "movie-card" do %>
+        <%= image_tag movie.poster_image_url if movie.poster_image_url.present? %>
+        <div class="movie-info">
+          <h3><%= movie.title %></h3>
+          <p><%= movie.genre %></p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+

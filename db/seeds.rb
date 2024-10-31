@@ -9,51 +9,58 @@
 #   end
 # db/seeds.rb
 
-# Clear existing records
-User.delete_all
-Movie.delete_all
-Showtime.delete_all
-
-# Create Admin User
-admin = User.create!(
-  email: 'admin@example.com',
-  password: 'password',
-  role: 'admin'
-)
-
-# Create Regular Users
-user1 = User.create!(
-  email: 'user1@example.com',
-  password: 'password',
-  role: 'regular'
-)
-
-user2 = User.create!(
-  email: 'user2@example.com',
-  password: 'password',
-  role: 'regular'
-)
-
-# Create Movies
+# Create sample movies
 movies = [
-  { title: 'Inception', description: 'A mind-bending thriller', genre: 'Sci-Fi' },
-  { title: 'The Dark Knight', description: 'A superhero thriller', genre: 'Action' },
-  { title: 'Interstellar', description: 'A journey beyond the stars', genre: 'Sci-Fi' }
+  {
+    title: "Dune: Part Two",
+    description: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+    genre: "Science Fiction",
+    poster_image_url: "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
+    published: true
+  },
+  {
+    title: "Kung Fu Panda 4",
+    description: "Po must train a new Dragon Warrior while defending the Valley of Peace from a powerful sorceress.",
+    genre: "Animation",
+    poster_image_url: "https://image.tmdb.org/t/p/w500/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg",
+    published: true
+  },
+  {
+    title: "Ghostbusters: Frozen Empire",
+    description: "The Spengler family returns to where it all started – the iconic New York City firehouse – to team up with the original Ghostbusters.",
+    genre: "Action/Comedy",
+    poster_image_url: "https://image.tmdb.org/t/p/w500/5YZbUmjbMa3ClvSW1Wj3D6XGolb.jpg",
+    published: true
+  }
 ]
 
 movies.each do |movie_data|
-  Movie.create!(movie_data)
-end
+  movie = Movie.create!(movie_data)
+  
+  # Create showtimes for each movie
+  (0..6).each do |days_from_now|
+    date = Date.today + days_from_now
+    
+    showtimes = [
+      { start: "10:00", end: "12:30" },
+      { start: "13:00", end: "15:30" },
+      { start: "16:00", end: "18:30" },
+      { start: "19:00", end: "21:30" },
+      { start: "22:00", end: "23:59" }
+    ]
 
-# Create Showtimes for Movies
-movies.each_with_index do |movie_data, index|
-    movie = Movie.find_by(title: movie_data[:title])
-    Showtime.create!(
-      movie: movie,
-      start_time: DateTime.now + (index + 1).days,
-      date: Date.today + (index + 1).days,     # Add a date attribute
-      capacity: 50                             # Add capacity as per requirements
-    )
+    showtimes.each do |show|
+      start_datetime = DateTime.parse("#{date} #{show[:start]}")
+      end_datetime = DateTime.parse("#{date} #{show[:end]}")
+      
+      Showtime.create!(
+        movie: movie,
+        date: date,
+        time: start_datetime,
+        start_time: start_datetime,
+        end_time: end_datetime,
+        capacity: 50
+      )
+    end
   end
-
-puts "Database seeded successfully!"
+end

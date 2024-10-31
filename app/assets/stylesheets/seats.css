@@ -1,0 +1,38 @@
+.seats-container {
+  margin: 20px 0;
+}
+
+.screen {
+  background: #ccc;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 30px;
+}
+
+.seats-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.seat {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.seat.available {
+  background: #fff;
+}
+
+.seat.reserved {
+  background: #ff4444;
+  cursor: not-allowed;
+}
+
+.seat.selected {
+  background: #44ff44;
+}
