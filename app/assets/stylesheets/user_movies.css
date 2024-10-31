@@ -268,15 +268,63 @@
 .seat {
   transform-origin: center bottom;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #ffffff;
+  border: 2px solid #2c3e50;
 }
 
 .seat:hover:not(.reserved) {
+  background: #e8f4fc; /* lighter blue for hover */
   transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .seat.selected {
-  animation: pulse 1s infinite;
+  background: #2ecc71 !important; /* green color that overrides hover state */
+  color: white;
+  border-color: #27ae60;
+  transform: scale(1.1);
+}
+
+.seat.available {
+  background-color: #ffffff;
+}
+
+
+.seat.reserved {
+  background-color: #e74c3c;
+  color: white;
+  cursor: not-allowed;
+}
+
+.seat-legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.seats-grid .seat.selected {
+  background-color: #2ecc71;
+  color: white;
+  border-color: #27ae60;
+  transform: scale(1.1);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 @keyframes pulse {

@@ -4,28 +4,25 @@ export default class extends Controller {
   static targets = ["seat", "submitButton", "seatInput"]
 
   connect() {
+    console.log("✅ Seat Selection Controller Connected!")
     this.selectedSeat = null
   }
 
   select(event) {
+    console.log("🎯 Seat Clicked:", event.currentTarget.dataset.seatId)
     const seatElement = event.currentTarget
     
-    // Don't allow selecting reserved seats
-    if (seatElement.classList.contains('reserved')) return
-
-    // Remove selected class from all seats
     this.seatTargets.forEach(seat => {
       seat.classList.remove('selected')
+      console.log("💫 Removing previous selection")
     })
 
-    // Add selected class to clicked seat
     seatElement.classList.add('selected')
+    console.log("✨ New seat selected:", seatElement.dataset.seatId)
     
-    // Update the hidden input with selected seat number
     this.selectedSeat = seatElement.dataset.seatId
     this.seatInputTarget.value = this.selectedSeat
-    
-    // Enable the submit button
     this.submitButtonTarget.disabled = false
+    console.log("🔓 Submit button enabled")
   }
 }
