@@ -7,19 +7,18 @@
   </header>
 
   <%= turbo_frame_tag "movies" do %>
-    <div class="movies-grid">
+    <div class="admin-movies-grid">
       <% @movies.each do |movie| %>
         <%= turbo_frame_tag dom_id(movie) do %>
           <div class="movie-card">
             <div class="movie-content">
-              <h2 class="movie-title">
-                <%= link_to movie.title, admin_movie_path(movie), class: "movie-link" %>
-              </h2>
-              
-              <div class="movie-details">
+              <div class="movie-header">
+                <h2 class="movie-title">
+                  <%= link_to movie.title, admin_movie_path(movie), class: "movie-link" %>
+                </h2>
                 <span class="movie-genre"><%= movie.genre %></span>
-                <p class="movie-description"><%= truncate(movie.description, length: 150) %></p>
               </div>
+              <p class="movie-description"><%= truncate(movie.description, length: 150) %></p>
             </div>
 
             <div class="action-buttons">
