@@ -1,21 +1,39 @@
-<h1>Admin Dashboard</h1>
 
 <%= turbo_stream_from "dashboard" %>
 
 <div data-controller="dashboard">
+<div class="key-metrics mb-4">
+  <div class="metric">
+    <strong>Total Reservations:</strong> <%= Reservation.count %>
+  </div>
+  
+  <div class="metric">
+    <strong>Total Revenue:</strong> $<%= Reservation.where(status: 'reserved').count * 10 %>
+  </div>
+  
+  <div class="metric">
+    <strong>Total Movies:</strong> <%= Movie.count %>
+  </div>
+  
+  <div class="metric">
+    <strong>Total Showtimes:</strong> <%= Showtime.count %>
+  </div>
+</div>
+
   <div class="filters mb-4">
-    <input type="text" 
-           data-dashboard-target="search" 
-           data-action="input->dashboard#filter"
-           placeholder="Search movies..."
-           class="search-input">
-           
-    <select data-dashboard-target="dateFilter" data-action="change->dashboard#filter">
-      <option value="">All Dates</option>
-      <option value="today">Today</option>
-      <option value="week">This Week</option>
-      <option value="month">This Month</option>
-    </select>
+  <%= form_with(url: admin_dashboard_path, method: :get, local: true) do |form| %>
+    <div class="mb-4 flex">
+      <%= form.label :search, "Search Movies", class: "block text-gray-700 mr-2" %>
+      <%= form.text_field :search, value: params[:search], class: "mt-1 block w-full border-gray-300 rounded-md" %>
+      <%= form.submit "Search", class: "ml-2 bg-blue-500 text-white rounded px-4 py-2" %>
+    </div>
+
+      <div class="mb-4 flex">
+        <%= form.label :date_filter, "Filter by Date", class: "block text-gray-700 mr-2" %>
+        <%= form.select :date_filter, options_for_select([['All Dates', ''], ['Today', 'today'], ['This Week', 'week'], ['This Month', 'month']], params[:date_filter]), { class: "mt-1 block w-full border-gray-300 rounded-md" } %>
+        </div>
+    <% end %>
+      
   </div>
 
   <table data-dashboard-target="table">
@@ -34,4 +52,5 @@
       <% end %>
     </tbody>
   </table>
+  
 </div>

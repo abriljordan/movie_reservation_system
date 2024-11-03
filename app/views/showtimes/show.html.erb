@@ -41,3 +41,23 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  // Assuming this is part of the seat_selection_controller.js
+  document.addEventListener("DOMContentLoaded", function() {
+    const seats = document.querySelectorAll('[data-seat-selection-target="seat"]');
+    const submitButton = document.querySelector('[data-seat-selection-target="submitButton"]');
+    const seatInput = document.querySelector('[data-seat-selection-target="seatInput"]');
+
+    seats.forEach(seat => {
+      seat.addEventListener('click', function() {
+        if (!seat.classList.contains('reserved')) {
+          seats.forEach(s => s.classList.remove('selected'));
+          seat.classList.add('selected');
+          seatInput.value = seat.dataset.seatId;
+          submitButton.disabled = false;
+        }
+      });
+    });
+  });
+</script>

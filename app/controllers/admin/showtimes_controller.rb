@@ -7,6 +7,7 @@ class Admin::ShowtimesController < ApplicationController
   before_action :authorize_admin
 
   def index
+    
     @showtimes = if @movie
       @movie.showtimes
     else
@@ -67,6 +68,12 @@ class Admin::ShowtimesController < ApplicationController
   rescue ActiveRecord::InvalidForeignKey => e
     redirect_to admin_movie_showtimes_path(@movie), alert: 'The showtime is associated with a reservation and cannot be deleted.'
   end
+
+  def total_revenue
+    reserved_count = reservations.where(status: 'reserved').count
+    reserved_count * ticket_price # Assuming ticket_price is a method or attribute
+  end
+
 
   private
 
