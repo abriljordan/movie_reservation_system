@@ -6,7 +6,8 @@ class Admin::DashboardController < ApplicationController
 
   def index
     @showtimes = Showtime.includes(:reservations)
-  
+    @showtimes = Showtime.page(params[:page]).per(10) # 10 items per page
+
 # Filter by search term if provided
     if params[:search].present?
       @showtimes = @showtimes.joins(:movie).where("LOWER(movies.title) LIKE ?", "%#{params[:search].downcase}%")
