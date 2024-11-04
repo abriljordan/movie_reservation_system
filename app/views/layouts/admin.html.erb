@@ -16,17 +16,17 @@
   <link rel="apple-touch-icon" href="/icon.png">
   <%= stylesheet_link_tag "admin", media: 'all' %>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= javascript_importmap_tags %>
 </head>
 
 <body>
   <div class="admin-container">
     <header>
-      <h1>Admin Dashboard</h1>
-      <span>Welcome, <%= current_user.email %></span> <!-- Display user's email -->
+    <h1>Movie Reservation System</h1>
+      <span>Welcome, <%= current_user.email %></span> 
 
-      <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
+      <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
     </header>
     <nav>
       <ul>
