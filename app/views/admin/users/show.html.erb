@@ -1,5 +1,10 @@
-<h1>User Details</h1>
-<p>Email: <%= @user.email %></p>
-<p>Role: <%= @user.role %></p>
-<%= link_to 'Edit', edit_admin_user_path(@user) %>
-<%= link_to 'Back', admin_users_path %>
+<div class="user-details-container">
+  <h1 class="section-title">User Details</h1>
+  <p class="user-info"><strong>Email:</strong> <%= @user.email %></p>
+  <p class="user-info"><strong>Role:</strong> <%= @user.role %></p>
+  
+  <div class="action-links">
+    <%= link_to 'Edit', edit_admin_user_path(@user), class: 'btn btn-primary' %>
+    <%= link_to 'Back', admin_users_path, class: 'btn btn-secondary' %>
+  </div>
+</div>

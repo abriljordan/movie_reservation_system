@@ -101,3 +101,37 @@
   font-size: 1.25rem; /* Font size for the value */
   color: #333; /* Text color */
 }
+
+table {
+  width: 100%; /* Make the table take the full width of the container */
+  border-collapse: collapse; /* Collapse borders to remove spacing between cells */
+  margin: 20px 0; /* Add margin above and below the table */
+}
+
+th, td {
+  padding: 15px; /* Add padding for spacing inside cells */
+  text-align: left; /* Align text to the left */
+}
+
+th {
+  background-color: #f2f2f2; /* Light background for header */
+  font-weight: bold; /* Make header text bold */
+}
+
+tbody tr {
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+tbody tr:hover {
+  background-color: #f9f9f9; /* Change background on hover */
+}
+
+/* Remove borders */
+table, th, td {
+  border: none; /* Remove borders */
+}
+
+a {
+  color: #030c16; /* Link color */
+  text-decoration: none; /* Remove underline */
+}

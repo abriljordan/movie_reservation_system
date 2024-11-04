@@ -1,0 +1,60 @@
+.user-details-container,
+.edit-user-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #dee2e6; /* Optional: Add a light border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background color */
+}
+
+.section-title {
+    font-size: 24px; /* Larger font size for headings */
+    margin-bottom: 15px; /* Space below headings */
+}
+
+.user-info {
+    font-size: 18px; /* Font size for user info */
+    margin: 10px 0; /* Space between user info paragraphs */
+}
+
+.action-links {
+    margin-top: 15px; /* Space above action links */
+}
+
+.btn {
+    display: inline-block; /* Make links look like buttons */
+    padding: 10px 15px; /* Padding for buttons */
+    margin-right: 10px; /* Space between buttons */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    color: white; /* Text color */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Bootstrap primary color */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Bootstrap secondary color */
+}
+
+.btn-success {
+    background-color: #28a745; /* Bootstrap success color */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space between form groups */
+}
+
+.form-label {
+    display: block; /* Make labels block elements */
+    margin-bottom: 5px; /* Space below labels */
+}
+
+.form-input,
+.form-select {
+    width: 100%; /* Full width for inputs and selects */
+    padding: 10px; /* Padding for inputs and selects */
+    border: 1px solid #ced4da; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+}

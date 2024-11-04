@@ -5,3 +5,4 @@
   //= link admin/dashboard.css
   //= link admin/movies.css
   //= link admin/showtimes.css
+//= link admin/user.css
