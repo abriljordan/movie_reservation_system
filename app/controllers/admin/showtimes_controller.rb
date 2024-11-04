@@ -78,7 +78,7 @@ class Admin::ShowtimesController < ApplicationController
   private
 
   def showtime_params
-    params.require(:showtime).permit(:start_time, :end_time, :date, :capacity, :movie_id)
+    params.require(:showtime).permit(:start_time, :end_time , :date ,:capacity, :movie_id)
   end
 
   def set_showtime

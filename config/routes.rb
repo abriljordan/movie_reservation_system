@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   namespace :admin do
     get '/', to: 'dashboard#index', as: :dashboard
     resources :movies do
-      resources :showtimes
+      resources :showtimes do
+        resources :reservations, only: %i[create destroy]
+    end
     end
     resources :showtimes
   end  

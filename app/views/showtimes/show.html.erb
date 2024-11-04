@@ -35,27 +35,55 @@
       <% end %>
     </div>
 
-    <%= form_for [@showtime.movie, @showtime, Reservation.new] do |f| %>
-      <%= f.hidden_field :seat_number, data: { seat_selection_target: "seatInput" } %>
-      <%= f.submit "Reserve Seat", class: "btn btn-primary", disabled: true, data: { seat_selection_target: "submitButton" } %>
-    <% end %>
   </div>
 </div>
 
 <script>
-  // Assuming this is part of the seat_selection_controller.js
   document.addEventListener("DOMContentLoaded", function() {
     const seats = document.querySelectorAll('[data-seat-selection-target="seat"]');
-    const submitButton = document.querySelector('[data-seat-selection-target="submitButton"]');
-    const seatInput = document.querySelector('[data-seat-selection-target="seatInput"]');
+    const showtimeId = <%= @showtime.id %>; // Get the showtime ID from the server
+    const movieId = <%= @movie.id %>; // Get the movie ID from the server
 
     seats.forEach(seat => {
       seat.addEventListener('click', function() {
-        if (!seat.classList.contains('reserved')) {
-          seats.forEach(s => s.classList.remove('selected'));
-          seat.classList.add('selected');
-          seatInput.value = seat.dataset.seatId;
-          submitButton.disabled = false;
+        const seatId = seat.dataset.seatId;
+
+        if (seat.classList.contains('reserved')) {
+          // Unreserve the seat
+          fetch(`/movies/${movieId}/showtimes/${showtimeId}/reservations/${seatId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              seat.classList.remove('reserved');
+              seat.classList.add('available');
+              alert("Seat unreserved successfully.");
+            } else {
+              alert("Failed to unreserve seat.");
+            }
+          });
+        } else {
+          // Reserve the seat
+          fetch(`/movies/${movieId}/showtimes/${showtimeId}/reservations`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ reservation: { seat_number: seatId } })
+          })
+          .then(response => {
+            if (response.ok) {
+              seat.classList.add('reserved');
+              alert("Seat reserved successfully.");
+            } else {
+              alert("Failed to reserve seat.");
+            }
+          });
         }
       });
     });

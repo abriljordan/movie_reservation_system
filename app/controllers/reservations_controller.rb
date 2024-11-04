@@ -30,6 +30,23 @@ class ReservationsController < ApplicationController
     end
   end
 
+  def destroy
+    @movie = Movie.find(params[:movie_id])
+    @showtime = @movie.showtimes.find(params[:showtime_id])
+    @reservation = @showtime.reservations.find_by(seat_number: params[:id], user: current_user)
+
+    if @reservation
+      @reservation.destroy
+      # Update seat status
+      seat = @showtime.seats.find_by(seat_number: @reservation.seat_number)
+      seat.update(status: :available) if seat
+
+      render json: { message: "Seat unreserved successfully." }, status: :ok
+    else
+      render json: { error: "Reservation not found." }, status: :not_found
+    end
+  end
+
   private
 
   def reservation_params
