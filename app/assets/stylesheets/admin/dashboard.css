@@ -55,3 +55,48 @@
   font-weight: 600;
   color: #059669;
 }
+
+
+.admin-dashboard-container {
+  max-width: 1200px; /* Match the container width */
+  margin: 0 auto; /* Center the container */
+  padding: 2rem; /* Padding around the container */
+}
+
+.main-cards {
+  display: grid; /* Use grid layout for cards */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
+  gap: 2rem; /* Space between cards */
+}
+
+.dashboard-card {
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 0px;
+  margin-bottom: 5px;
+  width: 150px; /* Set a fixed width */
+  display: flex; /* Use flexbox to center content */
+  flex-direction: column; /* Stack content vertically */
+  align-items: center; /* Center align items */
+  justify-content: center; /* Center content vertically */
+  text-align: center; /* Center text */
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px); /* Slightly lift on hover */
+}
+
+.card-content {
+  padding: 1.0rem; /* Inner spacing */
+}
+
+.card-label {
+  margin: 0 0 4px 0; /* Margin for label */
+  font-weight: 600; /* Bold label */
+}
+
+.card-value {
+  margin: 0; /* Remove default margin */
+  font-size: 1.25rem; /* Font size for the value */
+  color: #333; /* Text color */
+}

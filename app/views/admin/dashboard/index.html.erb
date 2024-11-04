@@ -1,49 +1,48 @@
-
-<%= turbo_stream_from "dashboard" %>
-
 <div data-controller="dashboard">
-<div class="key-metrics mb-4">
-  <div class="metric">
-    <strong>Total Reservations:</strong> <%= Reservation.count %>
+  <div class="admin-dashboard-container">
+    <div class="main-cards">
+      <% card_data = [
+        { label: "Total Reservations:", value: Reservation.count },
+        { label: "Total Revenue:", value: Reservation.where(status: 'reserved').count * 10 },
+        { label: "Total Movies:", value: Movie.count },
+        { label: "Total Showtimes:", value: Showtime.count }
+      ] %>
+
+      <% card_data.each do |card| %>
+        <div class="dashboard-card">
+          <div class="card-content">
+            <strong class="card-label"><%= card[:label] %></strong>
+            <p class="card-value"><%= card[:value] %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
-  
-  <div class="metric">
-    <strong>Total Revenue:</strong> $<%= Reservation.where(status: 'reserved').count * 10 %>
-  </div>
-  
-  <div class="metric">
-    <strong>Total Movies:</strong> <%= Movie.count %>
-  </div>
-  
-  <div class="metric">
-    <strong>Total Showtimes:</strong> <%= Showtime.count %>
-  </div>
-</div>
 
   <div class="filters mb-4">
-  <%= form_with(url: admin_dashboard_path, method: :get, local: true) do |form| %>
-    <div class="mb-4 flex">
-      <%= form.label :search, "Search Movies", class: "block text-gray-700 mr-2" %>
-      <%= form.text_field :search, value: params[:search], class: "mt-1 block w-full border-gray-300 rounded-md" %>
-      <%= form.submit "Search", class: "ml-2 bg-blue-500 text-white rounded px-4 py-2" %>
-    </div>
+    <%= form_with(url: admin_dashboard_path, method: :get, local: true) do |form| %>
+      <div class="mb-4 flex">
+        <%= form.label :search, "Search Movies", class: "block text-gray-700 mr-2" %>
+        <%= form.text_field :search, value: params[:search], class: "mt-1 block w-full border-gray-300 rounded-md" %>
+        <%= form.submit "Search", class: "ml-2 bg-blue-500 text-white rounded px-4 py-2" %>
+      </div>
 
       <div class="mb-4 flex">
         <%= form.label :date_filter, "Filter by Date", class: "block text-gray-700 mr-2" %>
-        <%= form.select :date_filter, options_for_select([['All Dates', ''], ['Today', 'today'], ['This Week', 'week'], ['This Month', 'month']], params[:date_filter]), { class: "mt-1 block w-full border-gray-300 rounded-md" } %>
-        </div>
+        <%= form.select :date_filter, options_for_select(
+          [['All Dates', ''], ['Today', 'today'], ['This Week', 'week'], ['This Month', 'month']],
+          params[:date_filter]
+        ), { class: "mt-1 block w-full border-gray-300 rounded-md" } %>
+      </div>
     <% end %>
-      
   </div>
 
   <table data-dashboard-target="table">
     <thead>
       <tr>
-        <th data-action="click->dashboard#sort" data-sort-key="title">Movie ↕</th>
-        <th data-action="click->dashboard#sort" data-sort-key="datetime">Showtime ↕</th>
-        <th data-action="click->dashboard#sort" data-sort-key="capacity">Capacity ↕</th>
-        <th data-action="click->dashboard#sort" data-sort-key="reserved">Reserved Seats ↕</th>
-        <th data-action="click->dashboard#sort" data-sort-key="revenue">Revenue ↕</th>
+        <% %w[title datetime capacity reserved revenue].each do |key| %>
+          <th data-action="click->dashboard#sort" data-sort-key="<%= key %>"><%= key.humanize %> ↕</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -52,6 +51,6 @@
       <% end %>
     </tbody>
   </table>
+  
   <%= paginate @showtimes %>
-
 </div>
