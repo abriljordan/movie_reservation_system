@@ -26,7 +26,6 @@
 <body>
   <div class="admin-container">
     <header>
-    <h1>Movie Reservation System</h1>
       <span>Welcome, <%= current_user.email %></span> 
 
       <%= button_to 'Logout', destroy_user_session_path, method: :delete %>

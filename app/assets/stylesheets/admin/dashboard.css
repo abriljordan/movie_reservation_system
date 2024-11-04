@@ -64,22 +64,23 @@
 }
 
 .main-cards {
-  display: grid; /* Use grid layout for cards */
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
-  gap: 2rem; /* Space between cards */
+  display: flex; /* Enable flexbox layout */
+  flex-wrap: wrap; /* Allow wrapping to the next line if necessary */
+  justify-content: space-around; /* Space cards evenly */
+  gap: 5px; /* Optional: Add space between cards */
 }
+
 
 .dashboard-card {
   border: 1px solid #dee2e6;
   border-radius: 5px;
-  padding: 0px;
-  margin-bottom: 5px;
-  width: 150px; /* Set a fixed width */
-  display: flex; /* Use flexbox to center content */
-  flex-direction: column; /* Stack content vertically */
-  align-items: center; /* Center align items */
-  justify-content: center; /* Center content vertically */
-  text-align: center; /* Center text */
+  padding: 10px;
+  width: 20%; /* Set a fixed width for uniformity */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .dashboard-card:hover {
