@@ -4,9 +4,10 @@ Rails.application.routes.draw do
     resources :movies do
       resources :showtimes do
         resources :reservations, only: %i[create destroy]
-    end
+      end
     end
     resources :showtimes
+    resources :users
   end  
 
   devise_for :users
