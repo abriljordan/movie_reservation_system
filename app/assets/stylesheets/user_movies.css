@@ -145,11 +145,6 @@
   cursor: not-allowed;
 }
 
-.seat.selected {
-  background: #2ecc71;
-  color: white;
-}
-
 /* Reservation Cards */
 .reservations-grid {
   display: grid;
