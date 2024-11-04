@@ -1,6 +1,6 @@
 <h1>Edit Showtime for <%= @movie.title %></h1>
 
-<%= form_with(model: [@movie, @showtime], local: true) do |form| %>
+<%= form_with(model: @showtime, url: admin_showtime_path(@showtime), method: :patch) do |form| %>
   <% if @showtime.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@showtime.errors.count, "error") %> prohibited this showtime from being saved:</h2>
@@ -17,6 +17,11 @@
     <%= form.datetime_select :start_time %>
   </div>
 
+  <div>
+  <%= form.label :end_time %> <!-- Add label for end time -->
+  <%= form.datetime_select :end_time %> <!-- Add field for end time -->
+</div>
+  
   <div class="field">
     <%= form.label :capacity %>
     <%= form.number_field :capacity %>

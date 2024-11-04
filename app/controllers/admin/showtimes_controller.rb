@@ -1,4 +1,3 @@
-# app/controllers/admin/showtimes_controller.rb
 class Admin::ShowtimesController < ApplicationController
   before_action :set_movie, only: [:new, :create, :index]
   before_action :set_showtime, only: [:show, :edit, :update, :destroy]
@@ -7,36 +6,19 @@ class Admin::ShowtimesController < ApplicationController
   before_action :authorize_admin
 
   def index
-  
-    if params[:movie_id]
-      @movie = Movie.find(params[:movie_id])
-      @showtimes = @movie.showtimes.page(params[:page]).per(10)
-    else
-      @showtimes = Showtime.page(params[:page]).per(10)
-      @movie = nil # Explicitly set @movie to nil when no movie_id is provided
-    end
+    @showtimes = Showtime.all.includes(:movie).page(params[:page]).per(10)
     @movies = Movie.all
   end
 
   def new
-    @showtime = if @movie
-      @movie.showtimes.build
-    else
-      Showtime.new
-    end
+    @showtime = Showtime.new
   end
 
   def create
-    if params[:movie_id]
-      @movie = Movie.find(params[:movie_id])
-      @showtime = @movie.showtimes.build(showtime_params)
-    else
-      @showtime = Showtime.new(showtime_params)
-    end
+    @showtime = Showtime.new(showtime_params)
 
     if @showtime.save
-      redirect_to @movie ? admin_movie_path(@movie) : admin_showtimes_path, 
-                  notice: 'Showtime was successfully created.'
+      redirect_to admin_showtimes_path, notice: 'Showtime was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -50,45 +32,35 @@ class Admin::ShowtimesController < ApplicationController
   end
 
   def update
+    @movie = @showtime.movie
     respond_to do |format|
       if @showtime.update(showtime_params)
-        Turbo::StreamsChannel.broadcast_update_to(
-          "showtimes",
-          target: dom_id(@showtime),
-          partial: "admin/showtimes/showtime",
-          locals: { showtime: @showtime }
-        )
-        format.turbo_stream
-        format.html { redirect_to admin_movie_showtimes_path(@movie) }
+        format.html { redirect_to admin_showtimes_path, notice: 'Showtime was successfully updated.' }
+        format.json { render json: @showtime, status: :ok }
       else
         format.html { render :edit }
+        format.json { render json: @showtime.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def destroy
     @showtime.destroy
-    redirect_to admin_movie_showtimes_path(@movie), notice: 'Showtime deleted successfully.'
+    redirect_to admin_showtimes_path, notice: 'Showtime deleted successfully.'
   rescue ActiveRecord::InvalidForeignKey => e
-    redirect_to admin_movie_showtimes_path(@movie), alert: 'The showtime is associated with a reservation and cannot be deleted.'
+    redirect_to admin_showtimes_path, alert: 'The showtime is associated with a reservation and cannot be deleted.'
   end
-
-  def total_revenue
-    reserved_count = reservations.where(status: 'reserved').count
-    reserved_count * ticket_price # Assuming ticket_price is a method or attribute
-  end
-
 
   private
 
   def showtime_params
-    params.require(:showtime).permit(:start_time, :end_time , :date ,:capacity, :movie_id)
+    params.require(:showtime).permit(:start_time, :end_time, :date, :capacity, :movie_id)
   end
 
   def set_showtime
     @showtime = Showtime.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to admin_movie_showtimes_path(@movie), alert: 'The showtime does not exist.'
+    redirect_to admin_showtimes_path, alert: 'The showtime does not exist.'
   end
 
   def set_movie

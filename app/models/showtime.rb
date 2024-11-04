@@ -43,10 +43,9 @@ class Showtime < ApplicationRecord
   end
 
   def end_time_after_start_time
-    return unless end_time.present? && start_time.present?
-    
+    return if end_time.blank? || start_time.blank?
     if end_time <= start_time
-      errors.add(:end_time, 'must be after the start time.')
+      errors.add(:end_time, "must be after the start time")
     end
   end
 end
