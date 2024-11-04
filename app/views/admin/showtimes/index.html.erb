@@ -4,6 +4,21 @@
   <% else %>
     <h1>All Showtimes</h1>
   <% end %>
+     
+  <!-- New Showtime Button -->
+  <div class="actions">
+        <% if @movie %>
+          <%= button_to 'New Showtime', 
+              new_admin_movie_showtime_path(@movie), 
+              method: :get, 
+              class: 'btn btn-primary' %>
+        <% else %>
+          <%= button_to 'New Showtime', 
+              new_admin_showtime_path, 
+              method: :get, 
+              class: 'btn btn-primary' %>
+        <% end %>
+      </div>
 
   <div data-controller="filter">
     <div class="filters">
@@ -58,17 +73,6 @@
     </div>
   </div>
 
-  <div class="actions">
-    <% if @movie %>
-      <%= button_to 'New Showtime', 
-          new_admin_movie_showtime_path(@movie), 
-          method: :get, 
-          class: 'btn btn-primary' %>
-    <% else %>
-      <%= button_to 'New Showtime', 
-          new_admin_showtime_path, 
-          method: :get, 
-          class: 'btn btn-primary' %>
-    <% end %>
-  </div>
+  <%= paginate @showtimes %>
+
 </div>

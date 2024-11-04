@@ -1,2 +1,30 @@
-<h1>Showtimes#edit</h1>
-<p>Find me in app/views/showtimes/edit.html.erb</p>
+<h1>Edit Showtime for <%= @movie.title %></h1>
+
+<%= form_with(model: [@movie, @showtime], local: true) do |form| %>
+  <% if @showtime.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@showtime.errors.count, "error") %> prohibited this showtime from being saved:</h2>
+      <ul>
+        <% @showtime.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.datetime_select :start_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :capacity %>
+    <%= form.number_field :capacity %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Update Showtime", class: "btn btn-primary" %>
+        <%= link_to 'Back to Showtimes',  admin_showtimes_path, class: "button" %>
+
+  </div>
+<% end %>

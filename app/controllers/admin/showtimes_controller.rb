@@ -7,12 +7,15 @@ class Admin::ShowtimesController < ApplicationController
   before_action :authorize_admin
 
   def index
-    
-    @showtimes = if @movie
-      @movie.showtimes
+  
+    if params[:movie_id]
+      @movie = Movie.find(params[:movie_id])
+      @showtimes = @movie.showtimes.page(params[:page]).per(10)
     else
-      Showtime.all
+      @showtimes = Showtime.page(params[:page]).per(10)
+      @movie = nil # Explicitly set @movie to nil when no movie_id is provided
     end
+    @movies = Movie.all
   end
 
   def new
@@ -43,6 +46,7 @@ class Admin::ShowtimesController < ApplicationController
   end
 
   def edit
+    @movie = @showtime.movie
   end
 
   def update
